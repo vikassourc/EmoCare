@@ -6,12 +6,12 @@ WORKDIR /app
 # Copy root package.json
 COPY package.json ./
 
-# Copy server and client package.json files to install dependencies
-COPY server/package.json server/
+# Copy root package.json and client package.json
+COPY package.json ./
 COPY client/package.json client/
 
-# Install dependencies for both server and client
-RUN npm install --prefix server
+# Install root dependencies (which handles the server) and client dependencies
+RUN npm install
 RUN npm install --prefix client
 
 # Copy the rest of the application
