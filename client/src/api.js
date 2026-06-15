@@ -1,6 +1,9 @@
 // Centralised API client — mirrors the existing public/js/api.js but for React
 const BASE = '';
 
+// Auth endpoints that legitimately return 401 for bad credentials (not session expiry)
+const AUTH_ENDPOINTS = ['/api/auth/login', '/api/auth/signup', '/api/auth/google'];
+
 const req = async (method, endpoint, data = null) => {
   const token = localStorage.getItem('emocare_token');
   const config = {
@@ -12,7 +15,8 @@ const req = async (method, endpoint, data = null) => {
 
   const res = await fetch(`${BASE}${endpoint}`, config);
 
-  if (res.status === 401) {
+  // Only treat 401 as "session expired" on protected routes (not login/signup)
+  if (res.status === 401 && !AUTH_ENDPOINTS.includes(endpoint)) {
     localStorage.removeItem('emocare_token');
     localStorage.removeItem('emocare_user');
     window.location.href = '/login';
