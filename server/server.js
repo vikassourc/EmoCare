@@ -74,6 +74,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// ---------- Trust Proxy (Required for Render/Heroku deployments) ----------
+
+/**
+ * Trust the first proxy hop. Required when deployed behind a load balancer
+ * (e.g., Render, Heroku) so that express-rate-limit can correctly read the
+ * client's real IP from the X-Forwarded-For header.
+ */
+app.set('trust proxy', 1);
+
 // ---------- Rate Limiting ----------
 
 /**
