@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EmoCare — Your AI-powered emotional wellness companion. Feel heard, grow stronger with daily check-ins, guided journaling, and personalized insights." />
+  <title>EmoCare — Emotional Wellness Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+  <!-- Ambient background -->
+  <div class="aurora-bg"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <a href="/" style="display:flex;align-items:center;gap:8px;">
+        <span class="brand-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z" fill="#3C8C78"/>
+          </svg>
+        </span>
+        <span class="brand-name">EmoCare</span>
+      </a>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="/" class="nav-link active">Home</a>
+      <a href="/chat.html" class="nav-link">Chat</a>
+      <a href="/dashboard.html" class="nav-link">Dashboard</a>
+      <a href="/journal.html" class="nav-link">Journal</a>
+      <a href="/breathe.html" class="nav-link">Breathe</a>
+    </div>
+    <div class="nav-right">
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+      <!-- Auth-aware CTA: toggled by auth.js -->
+      <a href="/login.html" class="btn-primary" id="navCta">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" data-reveal="up">
+    <div class="hero-bg-orb orb1"></div>
+    <div class="hero-bg-orb orb2"></div>
+    <div class="hero-content">
+      <div class="hero-badge" data-reveal="up">🌿 Your mental wellness starts here</div>
+      <h1 class="hero-title" data-reveal="up">
+        Feel heard.<br />
+        <em>Grow stronger.</em>
+      </h1>
+      <p class="hero-desc" data-reveal="up">
+        EmoCare is your AI-powered emotional companion — always available to listen,
+        understand your feelings, and guide you toward a healthier mind.
+      </p>
+      <div class="hero-cta" data-reveal="up">
+        <a href="/login.html" class="btn-primary btn-lg" id="heroCta">Begin Your Journey →</a>
+        <a href="/dashboard.html" class="btn-ghost">View Dashboard</a>
+      </div>
+      <div class="hero-stats" data-reveal="up">
+        <div class="stat"><span class="stat-num" data-count="10K+">0</span><span class="stat-label">Sessions</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" data-count="98%">0</span><span class="stat-label">Feel better</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" data-count="24/7">0</span><span class="stat-label">Available</span></div>
+      </div>
+    </div>
+    <div class="hero-visual" data-reveal="right">
+      <div class="phone-mock">
+        <div class="phone-screen">
+          <div class="phone-header">
+            <span class="ph-dot"></span>
+            <span class="ph-name">EmoCare AI</span>
+            <span class="ph-status">● Online</span>
+          </div>
+          <div class="phone-chat">
+            <div class="ph-msg ai">Hi! How are you feeling today? 💚</div>
+            <div class="ph-msg ai">I'm here to listen — no judgment, just support.</div>
+            <div class="ph-msg user">I've been feeling really overwhelmed lately...</div>
+            <div class="ph-msg ai">I hear you. Feeling overwhelmed is really hard. Can you tell me what's been weighing on you most?</div>
+          </div>
+          <div class="phone-input">
+            <span class="ph-input-text">Share your thoughts...</span>
+            <span class="ph-send">➤</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="features-header" data-reveal="up">
+      <h2>Everything you need to <em>thrive</em></h2>
+      <p>A complete emotional wellness toolkit, powered by AI</p>
+    </div>
+    <div class="features-grid" data-reveal-stagger>
+      <div class="feature-card fc-green tilt-card gradient-border">
+        <div class="fc-icon">🧠</div>
+        <h3>Emotional Check-ins</h3>
+        <p>Daily mood tracking with pattern recognition to understand your emotional trends over time.</p>
+      </div>
+      <div class="feature-card fc-teal tilt-card gradient-border">
+        <div class="fc-icon">💬</div>
+        <h3>AI Companion Chat</h3>
+        <p>Natural, empathetic conversations that listen first and guide second — always non-judgmental.</p>
+      </div>
+      <div class="feature-card fc-sage tilt-card gradient-border">
+        <div class="fc-icon">🔍</div>
+        <h3>Root Cause Analysis</h3>
+        <p>Deep exploration of your triggers, habits, and patterns to understand what's really going on.</p>
+      </div>
+      <div class="feature-card fc-mint tilt-card gradient-border">
+        <div class="fc-icon">📓</div>
+        <h3>Guided Journaling</h3>
+        <p>AI-generated prompts and a private digital journal to process your thoughts and emotions.</p>
+      </div>
+      <div class="feature-card fc-green tilt-card gradient-border">
+        <div class="fc-icon">📊</div>
+        <h3>Wellness Dashboard</h3>
+        <p>Visual insights into your emotional health — mood charts, triggers, and growth indicators.</p>
+      </div>
+      <div class="feature-card fc-teal tilt-card gradient-border">
+        <div class="fc-icon">🌱</div>
+        <h3>Personalized Growth</h3>
+        <p>Actionable daily habits, coping strategies, and reflection exercises tailored to you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" data-reveal="up">
+    <h2>How EmoCare works</h2>
+    <div class="how-steps" data-reveal-stagger>
+      <div class="how-step">
+        <div class="step-num">01</div>
+        <h3>Check in daily</h3>
+        <p>Take 30 seconds to log your mood and what's happening in your life.</p>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-step">
+        <div class="step-num">02</div>
+        <h3>Talk it out</h3>
+        <p>Chat with EmoCare AI about your feelings — it listens deeply and asks the right questions.</p>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-step">
+        <div class="step-num">03</div>
+        <h3>Gain insight</h3>
+        <p>Receive personalized analysis of your emotional patterns and practical action steps.</p>
+      </div>
+      <div class="how-arrow">→</div>
+      <div class="how-step">
+        <div class="step-num">04</div>
+        <h3>Grow stronger</h3>
+        <p>Track your progress and build emotional resilience over time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" data-reveal="up">
+    <div class="footer-brand">
+      <span class="brand-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z" fill="#3C8C78"/>
+        </svg>
+      </span>
+      <span class="brand-name">EmoCare</span>
+    </div>
+    <p class="footer-tagline">Emotional Care — Always here for you</p>
+    <div class="footer-links">
+      <a href="/chat.html">Chat</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/journal.html">Journal</a>
+      <a href="/breathe.html">Breathe</a>
+    </div>
+    <p class="footer-note">If you're in crisis, please contact a mental health professional or call a crisis helpline immediately.</p>
+  </footer>
+
+  <script src="js/animations.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/darkmode.js"></script>
+</body>
+</html>

@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmoCare — AI Emotional Wellness Companion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #080b14;
+            --primary: #7c5fe6;
+            --primary-light: #a855f7;
+            --primary-gradient: linear-gradient(135deg, var(--primary), var(--primary-light));
+            --teal: #2dd4bf;
+            --amber: #fbbf24;
+            --pink: #f472b6;
+            --green: #4ade80;
+            --blue: #818cf8;
+            --text-main: #e8eaf0;
+            --text-muted: rgba(180, 185, 215, 0.8);
+            --surface: rgba(14, 17, 30, 0.85);
+            --border: rgba(130, 100, 255, 0.12);
+            --border-hover: rgba(130, 100, 255, 0.2);
+            --radius-card: 20px;
+            --radius-btn: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        button { cursor: pointer; border: none; font-family: inherit; }
+
+        /* Background Layers */
+        .bg-layer {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bg-grid {
+            background-image: linear-gradient(rgba(130,100,255,0.04) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(130,100,255,0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+            width: 100%; height: 100%;
+            position: absolute;
+        }
+
+        .bg-noise {
+            position: absolute;
+            width: 100%; height: 100%;
+            opacity: 0.4;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.25;
+            mix-blend-mode: screen;
+        }
+        .orb-1 { width: 550px; height: 550px; background: #7c5fe6; top: -10%; left: 50%; transform: translateX(-50%); animation: float-1 12s ease-in-out infinite; }
+        .orb-2 { width: 400px; height: 400px; background: #3b82f6; top: 15%; left: -5%; animation: float-2 15s ease-in-out infinite reverse; }
+        .orb-3 { width: 350px; height: 350px; background: #a855f7; bottom: 5%; right: -5%; animation: float-3 10s ease-in-out infinite; }
+
+        /* Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(8, 11, 20, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo-mark {
+            width: 38px; height: 38px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(124, 95, 230, 0.12);
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light), var(--primary));
+            background-size: 200% 200%;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 0 24px rgba(124, 95, 230, 0.4);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            animation: gradient-pan 5s ease infinite;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 32px rgba(124, 95, 230, 0.6), 0 0 12px rgba(168, 85, 247, 0.4) inset;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(124, 95, 230, 0.1);
+            border: 1px solid rgba(124, 95, 230, 0.35);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 24px;
+        }
+
+        .pulse-dot {
+            width: 8px; height: 8px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+
+        h1 {
+            font-size: 68px;
+            font-weight: 800;
+            letter-spacing: -2.5px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #a78bfa, #c084fc, #818cf8, #a78bfa);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-pan 4s ease infinite;
+        }
+
+        .hero-subtitle {
+            font-size: 17px;
+            color: var(--text-muted);
+            max-width: 520px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .hero-ctas {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 64px;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stats-bar {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-item:not(:last-child) {
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-num {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Two Column Visual */
+        .visual-section {
+            display: flex;
+            gap: 32px;
+            padding: 60px 0;
+            align-items: stretch;
+        }
+
+        .chat-card {
+            flex: 1.2;
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-card);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 36px; height: 36px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .chat-title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .chat-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--green);
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 6px; height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+
+        .chat-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .msg {
+            max-width: 80%;
+            padding: 12px 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .msg.ai {
+            background: rgba(124, 95, 230, 0.15);
+            border: 1px solid var(--border);
+            border-radius: 12px 12px 12px 4px;
+            align-self: flex-start;
+        }
+
+        .msg.user {
+            background: var(--primary-gradient);
+            border-radius: 12px 12px 4px 12px;
+            align-self: flex-end;
+            color: white;
+        }
+
+        .typing {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(124, 95, 230, 0.15);
+            border: 1px solid var(--border);
+            border-radius: 12px 12px 12px 4px;
+            align-self: flex-start;
+            width: fit-content;
+        }
+
+        .typing-dot {
+            width: 6px; height: 6px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing-bounce 1.4s infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        .visual-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-mini-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            padding: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .icon-box {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Mood Chips */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .mood-chip {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .mood-chip:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .mood-chip.active {
+            background: rgba(124, 95, 230, 0.25);
+            border: 1px solid var(--primary);
+            color: var(--text-main);
+            box-shadow: 0 0 16px rgba(124, 95, 230, 0.2);
+        }
+
+        /* Progress Bars */
+        .progress-item {
+            margin-bottom: 12px;
+        }
+        .progress-item:last-child { margin-bottom: 0; }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .progress-track {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .desc-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Features Grid */
+        .features-section {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .section-label {
+            color: var(--primary-light);
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .features-h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 48px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            text-align: left;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            padding: 32px 24px;
+            transition: all 0.25s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-hover);
+        }
+
+        .f-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 40px 0 80px;
+            display: flex;
+            gap: 24px;
+        }
+
+        .test-card {
+            flex: 1;
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            padding: 32px 24px;
+        }
+
+        .stars {
+            color: var(--amber);
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .quote {
+            font-size: 15px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .u-avatar {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--border-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .u-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .u-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            position: relative;
+            background: linear-gradient(135deg, rgba(124, 95, 230, 0.2), rgba(168, 85, 247, 0.15));
+            border: 1px solid rgba(124, 95, 230, 0.3);
+            border-radius: 24px;
+            padding: 64px 40px;
+            text-align: center;
+            margin-bottom: 80px;
+            overflow: hidden;
+        }
+
+        .cta-banner .orb-1 { width: 350px; height: 350px; top: -50%; left: -10%; animation: float-2 10s ease-in-out infinite; mix-blend-mode: screen; filter: blur(70px); background: #7c5fe6; }
+        .cta-banner .orb-2 { width: 300px; height: 300px; bottom: -50%; right: -10%; background: var(--teal); animation: float-3 12s ease-in-out infinite reverse; mix-blend-mode: screen; filter: blur(70px); }
+
+        .cta-banner h2 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-banner p {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(130, 100, 255, 0.1);
+            padding: 32px 0;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .f-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .f-links a:hover {
+            color: var(--text-main);
+        }
+
+        /* Animations */
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7); }
+            50% { opacity: 0.5; transform: scale(0.7); box-shadow: 0 0 8px 4px rgba(168, 85, 247, 0); }
+        }
+
+        @keyframes typing-bounce {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(-6px); opacity: 1; background-color: var(--primary-light); }
+        }
+
+        @keyframes gradient-pan {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float-1 {
+            0%, 100% { transform: translate(-50%, 0) scale(1); }
+            50% { transform: translate(-45%, 30px) scale(1.1); }
+        }
+        @keyframes float-2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -30px) scale(1.15); }
+        }
+        @keyframes float-3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, -40px) scale(0.9); }
+        }
+        
+        @keyframes fill-bar {
+            from { width: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .visual-section { flex-direction: column; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .testimonials { flex-direction: column; }
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 48px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .stats-bar { flex-wrap: wrap; gap: 20px; }
+            .stat-item { flex: 1 1 40%; border-right: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Layers -->
+    <div class="bg-layer">
+        <div class="bg-grid"></div>
+        <div class="bg-noise"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="container nav-inner">
+            <div class="logo">
+                <div class="logo-mark">🌿</div>
+                EmoCare
+            </div>
+            <ul class="nav-links">
+                <li><a href="/chat" class="nav-link">Chat</a></li>
+                <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+                <li><a href="/journal" class="nav-link">Journal</a></li>
+                <li><a href="/breathe" class="nav-link">Breathe</a></li>
+            </ul>
+            <a href="/dashboard" class="btn-primary">Dashboard <i class="ti ti-arrow-right"></i></a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="container hero">
+        <div class="status-pill">
+            <div class="pulse-dot"></div>
+            Your mental wellness starts here
+        </div>
+        
+        <h1>
+            Feel heard.<br>
+            <span class="text-gradient">Grow stronger.</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+            EmoCare is your AI emotional wellness companion — providing a safe space to process thoughts, track your mood, and build resilience every single day.
+        </p>
+
+        <div class="hero-ctas">
+            <a href="/chat" class="btn-primary">Begin Your Journey <i class="ti ti-arrow-right"></i></a>
+            <a href="/dashboard" class="btn-secondary"><i class="ti ti-layout-dashboard"></i> View Dashboard</a>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-num">10K+</div>
+                <div class="stat-label">Sessions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">98%</div>
+                <div class="stat-label">Feel Better</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">24/7</div>
+                <div class="stat-label">Available</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">4.9★</div>
+                <div class="stat-label">Rating</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Two-Column Visual Section -->
+    <section class="container visual-section">
+        <!-- Left: Chat Widget -->
+        <div class="chat-card">
+            <div class="chat-header">
+                <div class="chat-avatar">✨</div>
+                <div>
+                    <div class="chat-title">EmoCare AI</div>
+                    <div class="chat-status"><div class="status-dot"></div> Active now</div>
+                </div>
+            </div>
+            <div class="chat-body">
+                <div class="msg ai">Hi there. How are you feeling today?</div>
+                <div class="msg user">I'm feeling really anxious about a presentation at work tomorrow.</div>
+                <div class="msg ai">It's completely normal to feel anxious before a big presentation. Your body is just preparing you to do your best. What specifically is worrying you the most about it?</div>
+                <div class="msg user">I'm worried I'll forget what to say and look unprofessional.</div>
+                <div class="typing">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Feature Cards -->
+        <div class="visual-right">
+            <!-- Mood selector -->
+            <div class="feature-mini-card">
+                <div class="card-header">
+                    <div class="icon-box" style="background: rgba(124,95,230,0.15); color: var(--primary-light);">
+                        <i class="ti ti-mood-happy"></i>
+                    </div>
+                    How are you feeling today?
+                </div>
+                <div class="mood-grid">
+                    <button class="mood-chip" onclick="selectMood(this)">😌 Calm</button>
+                    <button class="mood-chip active" onclick="selectMood(this)">😰 Anxious</button>
+                    <button class="mood-chip" onclick="selectMood(this)">😞 Low</button>
+                    <button class="mood-chip" onclick="selectMood(this)">😊 Good</button>
+                </div>
+            </div>
+
+            <!-- Progress bars -->
+            <div class="feature-mini-card">
+                <div class="card-header">
+                    <div class="icon-box" style="background: rgba(45,212,191,0.15); color: var(--teal);">
+                        <i class="ti ti-chart-line"></i>
+                    </div>
+                    Weekly wellness score
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-header"><span>Mood stability</span><span>84%</span></div>
+                    <div class="progress-track"><div class="progress-fill" style="width: 84%; background: linear-gradient(90deg, #7c5fe6, #a855f7); animation: fill-bar 1.5s ease-out forwards;"></div></div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-header"><span>Anxiety level</span><span>32%</span></div>
+                    <div class="progress-track"><div class="progress-fill" style="width: 32%; background: linear-gradient(90deg, #14b8a6, #2dd4bf); animation: fill-bar 1.5s ease-out forwards 0.2s;"></div></div>
+                </div>
+                <div class="progress-item">
+                    <div class="progress-header"><span>Sleep quality</span><span>71%</span></div>
+                    <div class="progress-track"><div class="progress-fill" style="width: 71%; background: linear-gradient(90deg, #f59e0b, #fbbf24); animation: fill-bar 1.5s ease-out forwards 0.4s;"></div></div>
+                </div>
+            </div>
+
+            <!-- Breathing exercise -->
+            <div class="feature-mini-card">
+                <div class="card-header">
+                    <div class="icon-box" style="background: rgba(251,191,36,0.15); color: var(--amber);">
+                        <i class="ti ti-wind"></i>
+                    </div>
+                    4-7-8 Breathing
+                </div>
+                <p class="desc-text">A quick exercise to calm your nervous system and reduce anxiety.</p>
+                <a href="/breathe" class="btn-primary btn-full"><i class="ti ti-player-play"></i> Start session</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid Section -->
+    <section class="container features-section">
+        <div class="section-label">Everything you need</div>
+        <h2 class="features-h2">Your complete wellness toolkit</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="f-icon" style="background: rgba(124,95,230,0.15); color: var(--primary-light);"><i class="ti ti-brain"></i></div>
+                <h3>AI-powered therapy chat</h3>
+                <p>Empathetic, non-judgmental conversations available whenever you need someone to talk to.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon" style="background: rgba(45,212,191,0.15); color: var(--teal);"><i class="ti ti-notebook"></i></div>
+                <h3>Guided journaling</h3>
+                <p>Reflect on your day with intelligent prompts that help you process complex emotions.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon" style="background: rgba(251,191,36,0.15); color: var(--amber);"><i class="ti ti-wind"></i></div>
+                <h3>Breathwork & mindfulness</h3>
+                <p>Interactive breathing exercises to quickly reduce stress and center your mind.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon" style="background: rgba(244,114,182,0.15); color: var(--pink);"><i class="ti ti-chart-dots"></i></div>
+                <h3>Mood analytics</h3>
+                <p>Track your emotional states over time and discover the underlying patterns and triggers.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon" style="background: rgba(129,140,248,0.15); color: var(--blue);"><i class="ti ti-shield-lock"></i></div>
+                <h3>Private & secure</h3>
+                <p>Your emotional data is heavily encrypted and kept strictly confidential. Your mind is your sanctuary.</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon" style="background: rgba(74,222,128,0.15); color: var(--green);"><i class="ti ti-clock-24"></i></div>
+                <h3>Always available</h3>
+                <p>Mental health doesn't stick to a schedule. Get immediate support at 3 AM or 3 PM.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Row -->
+    <section class="container testimonials">
+        <div class="test-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote">"EmoCare has completely changed how I manage my stress. Having an empathetic listener available at any hour gives me so much peace of mind."</p>
+            <div class="user-info">
+                <div class="u-avatar" style="background: linear-gradient(135deg, #f472b6, #fb7185); color: #fff;">SK</div>
+                <div>
+                    <div class="u-name">Sarah K.</div>
+                    <div class="u-role">UX Designer</div>
+                </div>
+            </div>
+        </div>
+        <div class="test-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote">"The mood analytics helped me realize that my anxiety spikes predictably. Being aware of the patterns has been half the battle won."</p>
+            <div class="user-info">
+                <div class="u-avatar" style="background: linear-gradient(135deg, #3b82f6, #60a5fa); color: #fff;">MR</div>
+                <div>
+                    <div class="u-name">Marcus R.</div>
+                    <div class="u-role">Software Engineer</div>
+                </div>
+            </div>
+        </div>
+        <div class="test-card">
+            <div class="stars">★★★★★</div>
+            <p class="quote">"The 4-7-8 breathing exercise is my go-to between difficult classes. EmoCare feels like a supportive friend living in my pocket."</p>
+            <div class="user-info">
+                <div class="u-avatar" style="background: linear-gradient(135deg, #10b981, #34d399); color: #fff;">AL</div>
+                <div>
+                    <div class="u-name">Aisha L.</div>
+                    <div class="u-role">Teacher</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="container">
+        <div class="cta-banner">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            
+            <h2>Ready to feel better?</h2>
+            <p>Start your emotional wellness journey today. It's completely free to begin.</p>
+            
+            <div class="hero-ctas" style="margin-bottom: 0;">
+                <a href="/chat" class="btn-primary">Create Free Account <i class="ti ti-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="container">
+        <div class="footer-inner">
+            <div class="logo" style="font-size: 15px;">
+                <div class="logo-mark" style="width: 24px; height: 24px; font-size: 12px; border-radius: 6px;">🌿</div>
+                EmoCare
+            </div>
+            <div style="font-size: 13px;">&copy; 2026 EmoCare. All rights reserved.</div>
+            <div class="f-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JS -->
+    <script>
+        function selectMood(clickedBtn) {
+            // Remove active class from all chips
+            const chips = document.querySelectorAll('.mood-chip');
+            chips.forEach(chip => chip.classList.remove('active'));
+            // Add active class to clicked
+            clickedBtn.classList.add('active');
+        }
+    </script>
+</body>
+</html>

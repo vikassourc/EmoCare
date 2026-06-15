@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Chat with EmoCare AI — your empathetic emotional companion. Talk about your feelings in a safe, judgment-free space." />
+  <title>EmoCare — Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+<div class="chat-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="chat-sidebar" id="chatSidebar">
+    <div class="sidebar-logo">
+      <a href="/" style="display:flex;align-items:center;gap:8px;">
+        <span class="brand-icon"><img class="brand-logo" src="assets/emologo.jpg" alt="EmoCare Logo"></span>
+        <span class="brand-name">EmoCare</span>
+      </a>
+    </div>
+
+    <button class="btn-primary" style="width:100%;margin-bottom:16px;" id="newSessionBtn">+ New session</button>
+
+    <div class="mood-check">
+      <h4>Today's mood</h4>
+      <div class="mood-grid" id="moodGrid">
+        <div class="mood-chip" data-mood="Happy">
+          <span class="mood-emoji">😊</span> Happy
+        </div>
+        <div class="mood-chip" data-mood="Sad">
+          <span class="mood-emoji">😔</span> Sad
+        </div>
+        <div class="mood-chip" data-mood="Anxious">
+          <span class="mood-emoji">😰</span> Anxious
+        </div>
+        <div class="mood-chip" data-mood="Stressed">
+          <span class="mood-emoji">😤</span> Stressed
+        </div>
+        <div class="mood-chip" data-mood="Numb">
+          <span class="mood-emoji">😶</span> Numb
+        </div>
+        <div class="mood-chip" data-mood="Calm">
+          <span class="mood-emoji">😌</span> Calm
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-history">
+      <h4>Recent sessions</h4>
+      <div id="sessionsList">
+        <!-- Populated dynamically by chat.js -->
+      </div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <a href="/dashboard.html" class="nav-to-dash">📊 View my dashboard</a>
+      <a href="/breathe.html" class="nav-to-dash">🌬️ Breathing exercises</a>
+      <a href="/journal.html" class="nav-to-dash">📓 Open journal</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CHAT -->
+  <main class="chat-main">
+    <!-- Top bar with nav -->
+    <div class="chat-topbar">
+      <div class="chat-topbar-left">
+        <button class="topbar-btn mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Toggle sidebar">☰</button>
+        <div class="chat-topbar-info">
+          <div class="topbar-avatar"><img class="msg-avatar-img" src="assets/emologo.jpg" alt="AI"></div>
+          <div>
+            <div class="topbar-name">EmoCare AI</div>
+            <div class="topbar-status">● Online — here for you</div>
+          </div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="topbar-btn voice-mode-btn" id="voiceModeBtn" onclick="Voice.toggleMode()" title="Toggle voice mode">🔇 Voice</button>
+        <button class="topbar-btn" id="clearChatBtn">New session</button>
+        <a href="/journal.html"><button class="topbar-btn">Open journal</button></a>
+        <!-- User menu -->
+        <div class="user-menu" id="userMenu">
+          <button class="user-avatar-btn" id="userAvatarBtn">💚</button>
+          <div class="user-dropdown" id="userDropdown">
+            <span class="user-dropdown-name" id="userName">User</span>
+            <a href="/profile.html" class="dropdown-item">👤 Profile</a>
+            <a href="/dashboard.html" class="dropdown-item">📊 Dashboard</a>
+            <button class="dropdown-item" id="logoutBtn">🚪 Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="messages-area" id="messagesArea">
+      <!-- Welcome message -->
+      <div class="msg-row ai">
+        <div class="msg-avatar"><img class="msg-avatar-img" src="assets/emologo.jpg" alt="AI"></div>
+        <div>
+          <div class="msg-bubble">
+            Hi there 🌿 I'm EmoCare — your personal emotional companion.<br><br>
+            I'm here to listen without judgment, help you understand your feelings, and gently guide you toward feeling better.<br><br>
+            How are you feeling right now? You can pick a mood on the left, or just tell me what's on your mind.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Voice listening overlay -->
+    <div id="voiceOverlay">
+      <div class="voice-pulse-ring"></div>
+      <div class="voice-overlay-text">Listening… speak now</div>
+      <button class="voice-stop-btn" onclick="Voice.stop()">Stop</button>
+    </div>
+
+    <div id="voiceStatusBar"><span class="vs-dot"></span><span id="vsMsg">Voice mode on — AI will speak</span></div>
+
+    <div class="chat-input-area">
+      <button class="mic-btn" id="micBtn" onclick="Voice.listen()" title="Speak your message">🎤</button>
+      <textarea
+        id="chatInput"
+        placeholder="Share what's on your mind..."
+        rows="1"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" aria-label="Send message">➤</button>
+    </div>
+  </main>
+
+</div>
+
+<style>
+  /* ── Voice mode button ── */
+  .voice-mode-btn { transition: all 0.2s; }
+  .voice-mode-btn.active {
+    background: rgba(52,199,150,0.15) !important;
+    border-color: #34c796 !important;
+    color: #34c796 !important;
+    box-shadow: 0 0 12px rgba(52,199,150,0.25);
+  }
+
+  /* ── Mic button ── */
+  .mic-btn {
+    width: 48px; height: 48px;
+    background: var(--dm-surface-2, rgba(24,28,53,0.9));
+    border: 1.5px solid var(--dm-border, rgba(139,120,255,0.3));
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .mic-btn:hover { background: rgba(52,199,150,0.1); border-color: #34c796; transform: scale(1.05); }
+  .mic-btn.listening {
+    background: rgba(255,80,80,0.15);
+    border-color: #ff5050;
+    animation: mic-pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes mic-pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(255,80,80,0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(255,80,80,0); }
+  }
+
+  /* ── Voice overlay ── */
+  #voiceOverlay {
+    display: none;
+    position: absolute; inset: 0;
+    background: rgba(5,12,10,0.82);
+    backdrop-filter: blur(10px);
+    z-index: 50;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 20px;
+  }
+  #voiceOverlay.active { display: flex !important; }
+  .voice-pulse-ring {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(52,199,150,0.5) 0%, transparent 70%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; position: relative;
+  }
+  .voice-pulse-ring::before, .voice-pulse-ring::after {
+    content: ''; position: absolute; inset: -12px; border-radius: 50%;
+    border: 2px solid rgba(52,199,150,0.5);
+    animation: vpr 2s ease-out infinite;
+  }
+  .voice-pulse-ring::after { animation-delay: 1s; }
+  @keyframes vpr { 0%{transform:scale(0.8);opacity:1} 100%{transform:scale(1.7);opacity:0} }
+  .voice-pulse-ring::before { content: '🎤'; border: none; animation: none; }
+  .voice-overlay-text { color: #fff; font-size: 15px; font-family: 'DM Sans',sans-serif; font-weight: 500; }
+  .voice-stop-btn {
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 100px; color: #fff; padding: 10px 28px;
+    font-size: 13px; cursor: pointer; font-family: 'DM Sans',sans-serif;
+    transition: background 0.2s;
+  }
+  .voice-stop-btn:hover { background: rgba(255,255,255,0.22); }
+
+  /* ── Voice status bar ── */
+  #voiceStatusBar {
+    display: none; padding: 6px 20px;
+    background: rgba(52,199,150,0.08);
+    border-top: 1px solid rgba(52,199,150,0.18);
+    font-size: 12px; color: #34c796;
+    font-family: 'DM Sans',sans-serif;
+    align-items: center; gap: 8px;
+  }
+  #voiceStatusBar.visible { display: flex; }
+  .vs-dot { width: 6px; height: 6px; background: #34c796; border-radius: 50%; animation: vs-blink 1.2s infinite; flex-shrink:0; }
+  @keyframes vs-blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .chat-main { position: relative !important; }
+</style>
+
+<script src="js/animations.js"></script>
+<script src="js/api.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/voice.js"></script>
+
+</body>
+</html>

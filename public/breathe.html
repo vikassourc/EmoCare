@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EmoCare Breathing Exercises — Calm your mind with guided breathing patterns including 4-7-8, box breathing, and deep breath techniques." />
+  <title>EmoCare — Breathe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+<div class="breathe-layout">
+
+  <!-- NAV -->
+  <nav class="dashboard-nav breathe-nav">
+    <div class="nav-brand">
+      <a href="/" style="display:flex;align-items:center;gap:8px;">
+        <span class="brand-icon"><img class="brand-logo" src="assets/emologo.jpg" alt="EmoCare Logo"></span>
+        <span class="brand-name">EmoCare</span>
+      </a>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/chat.html" class="nav-link">Chat</a>
+      <a href="/dashboard.html" class="nav-link">Dashboard</a>
+      <a href="/journal.html" class="nav-link">Journal</a>
+      <a href="/breathe.html" class="nav-link active">Breathe</a>
+    </div>
+    <div class="nav-right">
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="user-menu" id="userMenu">
+        <button class="user-avatar-btn" id="userAvatarBtn">💚</button>
+        <div class="user-dropdown" id="userDropdown">
+          <span class="user-dropdown-name" id="userName">User</span>
+          <a href="/profile.html" class="dropdown-item">👤 Profile</a>
+          <a href="/dashboard.html" class="dropdown-item">📊 Dashboard</a>
+          <button class="dropdown-item" id="logoutBtn">🚪 Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breathe-body">
+
+    <!-- Header -->
+    <header class="breathe-header">
+      <h1 class="breathe-title" data-reveal="up">Find Your Calm</h1>
+      <p class="breathe-subtitle" data-reveal="up">Guided breathing exercises to center your mind and body</p>
+    </header>
+
+    <!-- Breathing Circle -->
+    <div class="breathe-circle-container" data-reveal="scale">
+      <div class="breathe-circle" id="breatheCircle">
+        <div class="breathe-ring"></div>
+        <div class="breathe-inner">
+          <div class="breathe-phase" id="breathePhase">Ready</div>
+          <div class="breathe-timer" id="breatheTimer">0:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="breathe-controls" data-reveal="up">
+      <button class="breathe-start-btn" id="breatheStartBtn">
+        <span class="breathe-btn-icon">▶</span>
+        <span class="breathe-btn-text" id="breatheBtnText">Start</span>
+      </button>
+    </div>
+
+    <!-- Session Stats -->
+    <div class="breathe-session-stats">
+      <div class="breathe-stat">
+        <span class="breathe-stat-value" id="cyclesCompleted">0</span>
+        <span class="breathe-stat-label">Cycles</span>
+      </div>
+      <div class="breathe-stat-divider"></div>
+      <div class="breathe-stat">
+        <span class="breathe-stat-value" id="totalTime">0:00</span>
+        <span class="breathe-stat-label">Total Time</span>
+      </div>
+    </div>
+
+    <!-- Pattern Selector -->
+    <div class="breathe-patterns">
+      <h3 class="breathe-patterns-title">Choose a Pattern</h3>
+      <div class="breathe-pattern-grid" data-reveal-stagger>
+
+        <div class="breathe-pattern-card tilt-card selected" data-pattern="478" id="pattern478">
+          <div class="pattern-icon">🌙</div>
+          <h4 class="pattern-name">4-7-8 Relaxation</h4>
+          <p class="pattern-desc">Calming technique for anxiety and sleep</p>
+          <div class="pattern-timing">
+            <span class="pattern-step">Inhale 4s</span>
+            <span class="pattern-step">Hold 7s</span>
+            <span class="pattern-step">Exhale 8s</span>
+          </div>
+        </div>
+
+        <div class="breathe-pattern-card tilt-card" data-pattern="box" id="patternBox">
+          <div class="pattern-icon">🔲</div>
+          <h4 class="pattern-name">Box Breathing</h4>
+          <p class="pattern-desc">Used by Navy SEALs for focus and calm</p>
+          <div class="pattern-timing">
+            <span class="pattern-step">Inhale 4s</span>
+            <span class="pattern-step">Hold 4s</span>
+            <span class="pattern-step">Exhale 4s</span>
+            <span class="pattern-step">Hold 4s</span>
+          </div>
+        </div>
+
+        <div class="breathe-pattern-card tilt-card" data-pattern="deep" id="patternDeep">
+          <div class="pattern-icon">🌊</div>
+          <h4 class="pattern-name">Deep Breath</h4>
+          <p class="pattern-desc">Simple deep breathing for quick relief</p>
+          <div class="pattern-timing">
+            <span class="pattern-step">Inhale 5s</span>
+            <span class="pattern-step">Exhale 5s</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Inspirational Quote -->
+    <div class="breathe-quote">
+      <blockquote class="breathe-quote-text" id="breatheQuote">
+        "Feelings come and go like clouds in a windy sky. Conscious breathing is my anchor."
+      </blockquote>
+      <cite class="breathe-quote-author" id="breatheAuthor">— Thích Nhất Hạnh</cite>
+    </div>
+
+  </div>
+</div>
+
+<script src="js/animations.js"></script>
+<script src="js/api.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/breathe.js"></script>
+
+</body>
+</html>

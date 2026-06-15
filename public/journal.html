@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EmoCare Journal — A private space to process your thoughts with AI-generated prompts, guided reflection, and emotional insights." />
+  <title>EmoCare — Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+<!-- Ambient background --><div class="aurora-bg"></div>
+
+<div class="journal-layout">
+
+  <!-- NAV -->
+  <nav class="dashboard-nav">
+    <div class="nav-brand">
+      <a href="/" style="display:flex;align-items:center;gap:8px;">
+        <span class="brand-icon"><img class="brand-logo" src="assets/emologo.jpg" alt="EmoCare Logo"></span>
+        <span class="brand-name">EmoCare</span>
+      </a>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/chat.html" class="nav-link">Chat</a>
+      <a href="/dashboard.html" class="nav-link">Dashboard</a>
+      <a href="/journal.html" class="nav-link active">Journal</a>
+      <a href="/breathe.html" class="nav-link">Breathe</a>
+    </div>
+    <div class="nav-right">
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="user-menu" id="userMenu">
+        <button class="user-avatar-btn" id="userAvatarBtn">💚</button>
+        <div class="user-dropdown" id="userDropdown">
+          <span class="user-dropdown-name" id="userName">User</span>
+          <a href="/profile.html" class="dropdown-item">👤 Profile</a>
+          <a href="/dashboard.html" class="dropdown-item">📊 Dashboard</a>
+          <button class="dropdown-item" id="logoutBtn">🚪 Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="journal-body">
+
+    <div class="journal-header" data-reveal="up">
+      <div>
+        <h2>Your Journal</h2>
+        <p class="journal-subtitle">A private space to process your thoughts</p>
+      </div>
+      <div class="journal-header-right">
+        <span id="entryCount" class="entry-count-label"></span>
+      </div>
+    </div>
+
+    <!-- AI PROMPT CARD -->
+    <div class="journal-prompt" data-reveal="up">
+      <div class="prompt-label">✨ Today's reflection prompt</div>
+      <div class="prompt-text" id="currentPrompt">
+        What is one emotion you've been avoiding lately, and what do you think it's trying to tell you?
+      </div>
+      <div class="prompt-actions">
+        <button class="prompt-btn" id="newPromptBtn">🔄 New prompt</button>
+        <button class="prompt-btn primary-btn" id="usePromptBtn">✍️ Write about this</button>
+      </div>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="journal-editor" data-reveal="scale-up">
+      <div class="editor-toolbar">
+        <span class="editor-date" id="entryDate"></span>
+        <div class="toolbar-sep"></div>
+        <select id="moodSelect" class="mood-select">
+          <option value="">Tag mood...</option>
+          <option value="😊 Happy">😊 Happy</option>
+          <option value="😔 Sad">😔 Sad</option>
+          <option value="😰 Anxious">😰 Anxious</option>
+          <option value="😤 Stressed">😤 Stressed</option>
+          <option value="😌 Calm">😌 Calm</option>
+          <option value="😶 Numb">😶 Numb</option>
+          <option value="😤 Angry">😤 Angry</option>
+          <option value="🤩 Excited">🤩 Excited</option>
+        </select>
+      </div>
+      <textarea
+        id="journalTextarea"
+        placeholder="Start writing... this is your private space. No judgment, just you and your thoughts."
+      ></textarea>
+      <div class="editor-footer">
+        <span class="word-count" id="wordCount">0 words</span>
+        <div class="editor-actions">
+          <button class="btn-ghost editor-btn" id="aiFeedbackBtn">🧠 AI reflection</button>
+          <button class="btn-primary editor-btn" id="saveEntryBtn">Save entry</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI FEEDBACK AREA -->
+    <div id="aiFeedbackArea" class="section-card hidden ai-feedback-card">
+      <h3>EmoCare's reflection</h3>
+      <div id="aiFeedbackContent" class="ai-feedback-content"></div>
+    </div>
+
+    <!-- PAST ENTRIES -->
+    <div class="past-entries" data-reveal="up">
+      <h3>Past entries</h3>
+      <div class="entry-list" id="entryList">
+        <!-- rendered by journal.js -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="js/animations.js"></script>
+<script src="js/api.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/journal.js"></script>
+
+</body>
+</html>

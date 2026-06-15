@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EmoCare — AI Emotional Wellness Companion</title>
+  <meta name="description" content="EmoCare is your AI-powered emotional wellness companion. Feel heard, understood, and supported 24/7. Track your mood, chat with AI, and grow stronger every day." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ========== LANDING PAGE OVERRIDES — BREATHTAKING DESIGN ========== */
+
+    /* Reset nav for landing */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #050c0a;
+      color: #e8f5f0;
+      overflow-x: hidden;
+    }
+
+    /* ── ANIMATED BACKGROUND ── */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-canvas::before {
+      content: '';
+      position: absolute;
+      width: 800px; height: 800px;
+      background: radial-gradient(ellipse, rgba(52,199,150,0.12) 0%, transparent 70%);
+      top: -200px; left: -200px;
+      animation: driftA 18s ease-in-out infinite alternate;
+    }
+    .bg-canvas::after {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(ellipse, rgba(78,184,160,0.1) 0%, transparent 70%);
+      bottom: -100px; right: -100px;
+      animation: driftB 14s ease-in-out infinite alternate;
+    }
+    @keyframes driftA { from { transform: translate(0, 0) scale(1); } to { transform: translate(120px, 80px) scale(1.2); } }
+    @keyframes driftB { from { transform: translate(0, 0) scale(1); } to { transform: translate(-80px, -60px) scale(1.15); } }
+
+    .mesh-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(52,199,150,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52,199,150,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── NAVBAR ── */
+    .lp-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(5, 12, 10, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(52,199,150,0.1);
+      transition: all 0.3s ease;
+    }
+    .lp-nav.scrolled {
+      padding: 12px 48px;
+      background: rgba(5, 12, 10, 0.92);
+    }
+
+    .lp-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .lp-logo-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(52,199,150,0.12);
+      border: 1px solid rgba(52,199,150,0.3);
+      flex-shrink: 0;
+    }
+    .lp-brand-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #34c796, #7effd4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.3px;
+    }
+
+    .lp-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .lp-nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(232,245,240,0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+      letter-spacing: 0.2px;
+    }
+    .lp-nav-link:hover { color: #34c796; }
+    .lp-nav-link.active { color: #34c796; }
+
+    .lp-nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .lp-btn-nav {
+      background: linear-gradient(135deg, #34c796, #2da87e);
+      color: #050c0a;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.25s;
+      letter-spacing: 0.2px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(52,199,150,0.25);
+    }
+    .lp-btn-nav:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 32px rgba(52,199,150,0.4);
+    }
+
+    /* ── HERO SECTION ── */
+    .lp-hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 48px 80px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .hero-left {
+      flex: 1;
+      padding-right: 60px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(52,199,150,0.1);
+      border: 1px solid rgba(52,199,150,0.25);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #34c796;
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s ease forwards;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: #34c796;
+      border-radius: 50%;
+      animation: pulse-dot 2s ease infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    .hero-headline {
+      font-family: 'Fraunces', serif;
+      font-size: 76px;
+      font-weight: 400;
+      line-height: 1.0;
+      margin-bottom: 28px;
+      color: #e8f5f0;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero-headline em {
+      font-style: italic;
+      background: linear-gradient(135deg, #34c796, #7effd4, #4eb8a0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-headline .line-break { display: block; }
+
+    .hero-desc {
+      font-size: 18px;
+      line-height: 1.75;
+      color: rgba(232,245,240,0.6);
+      max-width: 480px;
+      margin-bottom: 44px;
+      font-weight: 300;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 64px;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #34c796, #2da87e);
+      color: #050c0a;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 16px 36px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 0 40px rgba(52,199,150,0.3), 0 8px 32px rgba(52,199,150,0.2);
+      letter-spacing: 0.1px;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-hero-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .btn-hero-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 60px rgba(52,199,150,0.5), 0 16px 48px rgba(52,199,150,0.3);
+    }
+    .btn-hero-primary:hover::before { opacity: 1; }
+    .btn-arrow { font-size: 18px; transition: transform 0.3s; }
+    .btn-hero-primary:hover .btn-arrow { transform: translateX(4px); }
+
+    .btn-hero-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: rgba(232,245,240,0.7);
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 15px 28px;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1px solid rgba(232,245,240,0.15);
+      transition: all 0.25s;
+    }
+    .btn-hero-ghost:hover {
+      border-color: rgba(52,199,150,0.4);
+      color: #34c796;
+      background: rgba(52,199,150,0.05);
+    }
+
+    .hero-metrics {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+    .metric {
+      display: flex;
+      flex-direction: column;
+      padding: 0 28px 0 0;
+    }
+    .metric:not(:first-child) { padding-left: 28px; border-left: 1px solid rgba(232,245,240,0.1); }
+    .metric-num {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #34c796, #7effd4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+    .metric-label {
+      font-size: 12px;
+      color: rgba(232,245,240,0.4);
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* ── HERO VISUAL ── */
+    .hero-right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .phone-glow-ring {
+      position: absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(52,199,150,0.15) 0%, transparent 65%);
+      animation: rotatePulse 8s linear infinite;
+    }
+    @keyframes rotatePulse {
+      0% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.6; }
+    }
+
+    .phone-orbit {
+      position: absolute;
+      width: 380px; height: 380px;
+      border-radius: 50%;
+      border: 1px dashed rgba(52,199,150,0.15);
+      animation: spin 25s linear infinite;
+    }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .orbit-dot {
+      position: absolute;
+      width: 10px; height: 10px;
+      background: linear-gradient(135deg, #34c796, #7effd4);
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(52,199,150,0.6);
+      top: -5px; left: 50%;
+      transform: translateX(-50%);
+    }
+    .orbit-dot-2 {
+      position: absolute;
+      width: 7px; height: 7px;
+      background: rgba(52,199,150,0.5);
+      border-radius: 50%;
+      bottom: -3.5px; left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* Floating Cards around phone */
+    .float-card {
+      position: absolute;
+      background: rgba(20,35,30,0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(52,199,150,0.2);
+      border-radius: 16px;
+      padding: 14px 18px;
+      z-index: 10;
+    }
+    .float-card-1 {
+      top: 30px; left: -80px;
+      animation: floatCard1 6s ease-in-out infinite;
+    }
+    .float-card-2 {
+      bottom: 80px; right: -60px;
+      animation: floatCard2 7s ease-in-out infinite;
+    }
+    .float-card-3 {
+      top: 180px; right: -90px;
+      animation: floatCard3 5.5s ease-in-out infinite;
+    }
+    @keyframes floatCard1 { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-12px) rotate(0deg)} }
+    @keyframes floatCard2 { 0%,100%{transform:translateY(0) rotate(2deg)} 50%{transform:translateY(-10px) rotate(0deg)} }
+    @keyframes floatCard3 { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-14px) rotate(1deg)} }
+
+    .fc-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(52,199,150,0.7); margin-bottom: 4px; font-weight: 600; }
+    .fc-value { font-size: 18px; font-weight: 700; color: #e8f5f0; }
+    .fc-sub { font-size: 11px; color: rgba(232,245,240,0.4); margin-top: 2px; }
+    .fc-emoji { font-size: 22px; margin-bottom: 6px; }
+
+    .mood-mini-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 28px;
+      margin-top: 8px;
+    }
+    .mmb {
+      width: 8px;
+      border-radius: 3px 3px 0 0;
+      background: rgba(52,199,150,0.2);
+    }
+    .mmb.a { height: 60%; background: linear-gradient(180deg, #34c796, #2da87e); }
+    .mmb.b { height: 80%; background: linear-gradient(180deg, #34c796, #2da87e); }
+    .mmb.c { height: 45%; background: rgba(52,199,150,0.3); }
+    .mmb.d { height: 100%; background: linear-gradient(180deg, #34c796, #2da87e); }
+    .mmb.e { height: 70%; background: linear-gradient(180deg, #34c796, #2da87e); }
+    .mmb.f { height: 55%; background: rgba(52,199,150,0.3); }
+    .mmb.g { height: 90%; background: linear-gradient(180deg, #34c796, #2da87e); }
+
+    /* Phone Mock */
+    .lp-phone {
+      width: 280px;
+      background: #0d1f1a;
+      border-radius: 42px;
+      padding: 14px;
+      box-shadow:
+        0 40px 100px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(52,199,150,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+      animation: phoneFloat 7s ease-in-out infinite;
+      position: relative;
+      z-index: 5;
+    }
+    @keyframes phoneFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+
+    .lp-phone-screen {
+      background: #071410;
+      border-radius: 30px;
+      overflow: hidden;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lp-phone-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid rgba(52,199,150,0.08);
+    }
+    .lp-ph-avatar {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, #34c796, #2da87e);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+    .lp-ph-info { flex: 1; }
+    .lp-ph-name { font-size: 13px; font-weight: 600; color: #e8f5f0; }
+    .lp-ph-status { font-size: 10px; color: #34c796; display: flex; align-items: center; gap: 4px; }
+    .status-dot { width: 5px; height: 5px; background: #34c796; border-radius: 50%; animation: pulse-dot 2s infinite; }
+
+    .lp-phone-msgs {
+      flex: 1;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .lp-msg {
+      max-width: 88%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 400;
+    }
+    .lp-msg.ai {
+      background: rgba(52,199,150,0.12);
+      border: 1px solid rgba(52,199,150,0.15);
+      color: #d0f0e8;
+      align-self: flex-start;
+      border-radius: 4px 18px 18px 18px;
+      animation: msgAppear 0.5s ease forwards;
+    }
+    .lp-msg.user {
+      background: linear-gradient(135deg, #34c796, #2da87e);
+      color: #050c0a;
+      align-self: flex-end;
+      border-radius: 18px 18px 4px 18px;
+      font-weight: 500;
+      animation: msgAppear 0.5s 0.2s ease both;
+    }
+    @keyframes msgAppear { from { opacity: 0; transform: translateY(8px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    .lp-msg.ai:nth-child(2) { animation-delay: 0.3s; animation-fill-mode: both; }
+    .lp-msg.ai:nth-child(3) { animation-delay: 0.6s; animation-fill-mode: both; }
+    .lp-msg.user:nth-child(4) { animation-delay: 0.9s; animation-fill-mode: both; }
+    .lp-msg.ai:nth-child(5) { animation-delay: 1.2s; animation-fill-mode: both; }
+
+    .lp-phone-input {
+      padding: 10px 14px;
+      border-top: 1px solid rgba(52,199,150,0.08);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lp-ph-inp {
+      flex: 1;
+      font-size: 11px;
+      color: rgba(232,245,240,0.25);
+      background: rgba(52,199,150,0.06);
+      border: 1px solid rgba(52,199,150,0.1);
+      border-radius: 20px;
+      padding: 8px 14px;
+    }
+    .lp-ph-send {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, #34c796, #2da87e);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      color: #050c0a;
+    }
+
+    /* ── TRUST BAR ── */
+    .lp-trust {
+      position: relative;
+      z-index: 1;
+      padding: 28px 0;
+      border-top: 1px solid rgba(52,199,150,0.08);
+      border-bottom: 1px solid rgba(52,199,150,0.08);
+      background: rgba(52,199,150,0.03);
+      overflow: hidden;
+    }
+    .trust-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 48px;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: rgba(232,245,240,0.4);
+      font-weight: 500;
+    }
+    .trust-icon { font-size: 18px; }
+
+    /* ── FEATURES ── */
+    .lp-features {
+      position: relative;
+      z-index: 1;
+      padding: 120px 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #34c796;
+      margin-bottom: 16px;
+    }
+    .section-label-line {
+      width: 24px; height: 1px;
+      background: #34c796;
+    }
+
+    .section-headline {
+      font-family: 'Fraunces', serif;
+      font-size: 52px;
+      font-weight: 400;
+      line-height: 1.1;
+      color: #e8f5f0;
+      margin-bottom: 16px;
+    }
+    .section-headline em {
+      font-style: italic;
+      background: linear-gradient(135deg, #34c796, #7effd4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-sub {
+      font-size: 17px;
+      color: rgba(232,245,240,0.45);
+      max-width: 500px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .features-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .features-text { padding-top: 8px; }
+
+    .feature-tabs {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .ftab {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 24px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+    .ftab:hover { background: rgba(52,199,150,0.06); }
+    .ftab.active {
+      background: rgba(52,199,150,0.08);
+      border-color: rgba(52,199,150,0.2);
+    }
+    .ftab-icon {
+      width: 44px; height: 44px;
+      background: rgba(52,199,150,0.1);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .ftab.active .ftab-icon {
+      background: linear-gradient(135deg, #34c796, #2da87e);
+    }
+    .ftab-body h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #e8f5f0;
+      margin-bottom: 6px;
+    }
+    .ftab-body p {
+      font-size: 14px;
+      color: rgba(232,245,240,0.45);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .features-preview {
+      position: sticky;
+      top: 100px;
+    }
+    .preview-card {
+      background: rgba(15,28,22,0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(52,199,150,0.15);
+      border-radius: 24px;
+      padding: 32px;
+      display: none;
+    }
+    .preview-card.active { display: block; animation: fadeUp 0.4s ease; }
+
+    .preview-mini-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 80px;
+      margin-bottom: 24px;
+    }
+    .pmc-bar {
+      flex: 1;
+      border-radius: 6px 6px 0 0;
+      opacity: 0.8;
+    }
+    .pmc-bar.v1 { height: 40%; background: linear-gradient(180deg, #34c796, #2da87e); }
+    .pmc-bar.v2 { height: 65%; background: linear-gradient(180deg, #34c796, #2da87e); }
+    .pmc-bar.v3 { height: 50%; background: rgba(52,199,150,0.3); }
+    .pmc-bar.v4 { height: 85%; background: linear-gradient(180deg, #34c796, #2da87e); }
+    .pmc-bar.v5 { height: 70%; background: linear-gradient(180deg, #34c796, #2da87e); }
+    .pmc-bar.v6 { height: 55%; background: rgba(52,199,150,0.3); }
+    .pmc-bar.v7 { height: 95%; background: linear-gradient(180deg, #34c796, #2da87e); }
+
+    .preview-label { font-size: 12px; color: rgba(52,199,150,0.7); font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 8px; }
+    .preview-value { font-family: 'Fraunces', serif; font-size: 36px; color: #e8f5f0; margin-bottom: 4px; }
+    .preview-trend { font-size: 13px; color: #34c796; display: flex; align-items: center; gap: 6px; }
+
+    /* ── HOW IT WORKS ── */
+    .lp-how {
+      position: relative;
+      z-index: 1;
+      padding: 120px 48px;
+      background: rgba(52,199,150,0.03);
+      border-top: 1px solid rgba(52,199,150,0.08);
+      border-bottom: 1px solid rgba(52,199,150,0.08);
+    }
+    .lp-how-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .how-header { text-align: center; margin-bottom: 80px; }
+
+    .how-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      position: relative;
+    }
+    .how-steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: calc(12.5% + 24px);
+      right: calc(12.5% + 24px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(52,199,150,0.3), rgba(52,199,150,0.3), transparent);
+    }
+
+    .how-step-card {
+      text-align: center;
+      padding: 0 24px;
+    }
+    .how-step-num-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .how-step-num {
+      width: 80px; height: 80px;
+      background: rgba(15,28,22,0.9);
+      border: 1px solid rgba(52,199,150,0.25);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      color: #34c796;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .how-step-card:hover .how-step-num {
+      background: rgba(52,199,150,0.1);
+      border-color: rgba(52,199,150,0.5);
+      box-shadow: 0 0 30px rgba(52,199,150,0.2);
+    }
+    .how-step-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #e8f5f0;
+      margin-bottom: 10px;
+    }
+    .how-step-card p {
+      font-size: 14px;
+      color: rgba(232,245,240,0.4);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .lp-testimonials {
+      position: relative;
+      z-index: 1;
+      padding: 120px 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .testimonials-header { text-align: center; margin-bottom: 64px; }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .tcard {
+      background: rgba(15,28,22,0.6);
+      border: 1px solid rgba(52,199,150,0.12);
+      border-radius: 20px;
+      padding: 28px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .tcard::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(52,199,150,0.4), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .tcard:hover {
+      transform: translateY(-6px);
+      border-color: rgba(52,199,150,0.25);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .tcard:hover::before { opacity: 1; }
+
+    .tcard-stars { display: flex; gap: 3px; margin-bottom: 16px; font-size: 14px; }
+    .tcard-quote { font-size: 15px; color: rgba(232,245,240,0.7); line-height: 1.7; margin-bottom: 24px; font-style: italic; font-weight: 300; }
+    .tcard-author { display: flex; align-items: center; gap: 12px; }
+    .tcard-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      background: rgba(52,199,150,0.1);
+      border: 1px solid rgba(52,199,150,0.2);
+    }
+    .tcard-name { font-size: 14px; font-weight: 600; color: #e8f5f0; }
+    .tcard-role { font-size: 12px; color: rgba(232,245,240,0.35); }
+
+    /* ── CTA SECTION ── */
+    .lp-cta {
+      position: relative;
+      z-index: 1;
+      padding: 80px 48px 120px;
+    }
+    .cta-card {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(52,199,150,0.15) 0%, rgba(15,28,22,0.8) 50%, rgba(45,168,126,0.1) 100%);
+      border: 1px solid rgba(52,199,150,0.25);
+      border-radius: 32px;
+      padding: 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(ellipse at center, rgba(52,199,150,0.08) 0%, transparent 60%);
+      animation: driftA 10s ease-in-out infinite alternate;
+    }
+    .cta-card > * { position: relative; z-index: 1; }
+
+    .cta-headline {
+      font-family: 'Fraunces', serif;
+      font-size: 52px;
+      font-weight: 400;
+      color: #e8f5f0;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .cta-sub {
+      font-size: 17px;
+      color: rgba(232,245,240,0.5);
+      margin-bottom: 48px;
+      font-weight: 300;
+    }
+    .cta-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .cta-note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: rgba(232,245,240,0.3);
+    }
+
+    /* ── FOOTER ── */
+    .lp-footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid rgba(52,199,150,0.08);
+      padding: 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .footer-brand-wrap { max-width: 280px; }
+    .footer-tagline {
+      font-size: 14px;
+      color: rgba(232,245,240,0.35);
+      margin-top: 12px;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+    .footer-nav-group { display: flex; gap: 64px; }
+    .footer-nav-col h5 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(232,245,240,0.4); margin-bottom: 16px; }
+    .footer-nav-col a { display: block; font-size: 14px; color: rgba(232,245,240,0.5); text-decoration: none; margin-bottom: 10px; transition: color 0.2s; font-weight: 300; }
+    .footer-nav-col a:hover { color: #34c796; }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(232,245,240,0.05);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy { font-size: 13px; color: rgba(232,245,240,0.2); font-weight: 300; }
+    .footer-crisis { font-size: 12px; color: rgba(232,245,240,0.2); max-width: 360px; text-align: right; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .lp-hero { flex-direction: column; padding-top: 100px; }
+      .hero-left { padding-right: 0; text-align: center; }
+      .hero-headline { font-size: 52px; }
+      .hero-actions { justify-content: center; }
+      .hero-metrics { justify-content: center; }
+      .hero-right { margin-top: 60px; }
+      .float-card-1, .float-card-2, .float-card-3 { display: none; }
+      .features-layout { grid-template-columns: 1fr; }
+      .features-preview { position: static; }
+      .how-steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .testimonials-grid { grid-template-columns: 1fr 1fr; }
+      .cta-card { padding: 48px 32px; }
+    }
+    @media (max-width: 768px) {
+      .lp-nav { padding: 14px 24px; }
+      .lp-nav-links { display: none; }
+      .lp-hero { padding: 100px 24px 60px; }
+      .hero-headline { font-size: 40px; }
+      .lp-features, .lp-testimonials, .lp-how { padding: 80px 24px; }
+      .how-steps-grid { grid-template-columns: 1fr 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .footer-top { flex-direction: column; gap: 40px; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+      .footer-crisis { text-align: center; }
+      .cta-card { padding: 40px 24px; }
+      .cta-headline { font-size: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND LAYERS -->
+  <div class="bg-canvas"></div>
+  <div class="mesh-grid"></div>
+
+  <!-- ══ NAVIGATION ══ -->
+  <nav class="lp-nav" id="mainNav">
+    <a href="index.html" class="lp-brand">
+      <div class="lp-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z" fill="#34c796"/>
+        </svg>
+      </div>
+      <span class="lp-brand-name">EmoCare</span>
+    </a>
+    <div class="lp-nav-links">
+      <a href="index.html" class="lp-nav-link active">Home</a>
+      <a href="chat.html" class="lp-nav-link">Chat</a>
+      <a href="dashboard.html" class="lp-nav-link">Dashboard</a>
+      <a href="journal.html" class="lp-nav-link">Journal</a>
+    </div>
+    <div class="lp-nav-cta">
+      <a href="chat.html" class="lp-btn-nav">Start for Free</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <section class="lp-hero">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        AI-Powered Emotional Wellness
+      </div>
+
+      <h1 class="hero-headline">
+        <span class="line-break">Feel truly</span>
+        <em>heard.</em>
+        <span class="line-break">Grow</span>
+        <em>stronger.</em>
+      </h1>
+
+      <p class="hero-desc">
+        EmoCare is your compassionate AI companion — always available, always understanding. Track your emotions, gain deep insights, and build lasting mental resilience.
+      </p>
+
+      <div class="hero-actions">
+        <a href="chat.html" class="btn-hero-primary">
+          Begin Your Journey
+          <span class="btn-arrow">→</span>
+        </a>
+        <a href="dashboard.html" class="btn-hero-ghost">
+          View Dashboard
+        </a>
+      </div>
+
+      <div class="hero-metrics">
+        <div class="metric">
+          <span class="metric-num">10K+</span>
+          <span class="metric-label">Sessions</span>
+        </div>
+        <div class="metric">
+          <span class="metric-num">98%</span>
+          <span class="metric-label">Feel Better</span>
+        </div>
+        <div class="metric">
+          <span class="metric-num">24/7</span>
+          <span class="metric-label">Available</span>
+        </div>
+        <div class="metric">
+          <span class="metric-num">4.9★</span>
+          <span class="metric-label">Rated</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="phone-glow-ring"></div>
+      <div class="phone-orbit">
+        <div class="orbit-dot"></div>
+        <div class="orbit-dot-2"></div>
+      </div>
+
+      <!-- Floating cards -->
+      <div class="float-card float-card-1">
+        <div class="fc-emoji">😊</div>
+        <div class="fc-label">Today's Mood</div>
+        <div class="fc-value">Happy</div>
+        <div class="fc-sub">↑ Better than yesterday</div>
+      </div>
+
+      <div class="float-card float-card-2">
+        <div class="fc-label">Mood Trend</div>
+        <div class="mood-mini-bars">
+          <div class="mmb a"></div><div class="mmb b"></div><div class="mmb c"></div>
+          <div class="mmb d"></div><div class="mmb e"></div><div class="mmb f"></div>
+          <div class="mmb g"></div>
+        </div>
+        <div class="fc-sub" style="margin-top: 6px;">7-day upswing 🎉</div>
+      </div>
+
+      <div class="float-card float-card-3">
+        <div class="fc-emoji">🌱</div>
+        <div class="fc-label">Streak</div>
+        <div class="fc-value">14 days</div>
+        <div class="fc-sub">Keep it up!</div>
+      </div>
+
+      <!-- Phone mockup -->
+      <div class="lp-phone">
+        <div class="lp-phone-screen">
+          <div class="lp-phone-bar">
+            <div class="lp-ph-avatar">💚</div>
+            <div class="lp-ph-info">
+              <div class="lp-ph-name">EmoCare AI</div>
+              <div class="lp-ph-status">
+                <span class="status-dot"></span>
+                Online · Always here
+              </div>
+            </div>
+          </div>
+          <div class="lp-phone-msgs">
+            <div class="lp-msg ai">Hi there 💚 How are you feeling right now?</div>
+            <div class="lp-msg ai">I'm here to listen — no judgment, just care.</div>
+            <div class="lp-msg user">I've been feeling really overwhelmed...</div>
+            <div class="lp-msg ai">I hear you. Feeling overwhelmed is really hard. Can you tell me more about what's been weighing on you?</div>
+            <div class="lp-msg ai">You're not alone in this 🌿</div>
+          </div>
+          <div class="lp-phone-input">
+            <div class="lp-ph-inp">Share your feelings...</div>
+            <div class="lp-ph-send">➤</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TRUST BAR ══ -->
+  <div class="lp-trust">
+    <div class="trust-inner">
+      <div class="trust-item"><span class="trust-icon">🔒</span> 100% Private & Secure</div>
+      <div class="trust-item"><span class="trust-icon">🧠</span> Evidence-Based Approaches</div>
+      <div class="trust-item"><span class="trust-icon">⚡</span> Instant AI Response</div>
+      <div class="trust-item"><span class="trust-icon">🌍</span> Available Everywhere</div>
+      <div class="trust-item"><span class="trust-icon">💯</span> No Judgment, Ever</div>
+    </div>
+  </div>
+
+  <!-- ══ FEATURES ══ -->
+  <section class="lp-features">
+    <div class="features-layout">
+      <div class="features-text">
+        <div class="section-label reveal">
+          <span class="section-label-line"></span>
+          Features
+        </div>
+        <h2 class="section-headline reveal reveal-delay-1">
+          Everything you need<br />to <em>truly thrive</em>
+        </h2>
+        <p class="section-sub reveal reveal-delay-2">
+          A complete emotional wellness toolkit, thoughtfully built to understand and support your mental health journey.
+        </p>
+
+        <div class="feature-tabs reveal reveal-delay-3">
+          <div class="ftab active" data-tab="0" onclick="setTab(0)">
+            <div class="ftab-icon">🧠</div>
+            <div class="ftab-body">
+              <h4>Emotional Check-ins</h4>
+              <p>Daily mood tracking with pattern recognition — understand your emotional trends with beautiful visualizations.</p>
+            </div>
+          </div>
+          <div class="ftab" data-tab="1" onclick="setTab(1)">
+            <div class="ftab-icon">💬</div>
+            <div class="ftab-body">
+              <h4>AI Companion Chat</h4>
+              <p>Natural, empathetic conversations that listen first and guide second — always non-judgmental and available.</p>
+            </div>
+          </div>
+          <div class="ftab" data-tab="2" onclick="setTab(2)">
+            <div class="ftab-icon">📓</div>
+            <div class="ftab-body">
+              <h4>Guided Journaling</h4>
+              <p>AI-crafted prompts and a private digital journal to process your thoughts and decode your emotions deeply.</p>
+            </div>
+          </div>
+          <div class="ftab" data-tab="3" onclick="setTab(3)">
+            <div class="ftab-icon">📊</div>
+            <div class="ftab-body">
+              <h4>Wellness Dashboard</h4>
+              <p>Visual insights into your emotional health — mood charts, trigger analysis, and personalized growth indicators.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="features-preview">
+        <div class="preview-card active" id="preview-0">
+          <div class="preview-label">Mood This Week</div>
+          <div class="preview-mini-chart">
+            <div class="pmc-bar v1"></div>
+            <div class="pmc-bar v2"></div>
+            <div class="pmc-bar v3"></div>
+            <div class="pmc-bar v4"></div>
+            <div class="pmc-bar v5"></div>
+            <div class="pmc-bar v6"></div>
+            <div class="pmc-bar v7"></div>
+          </div>
+          <div class="preview-value">Good ✨</div>
+          <div class="preview-trend">↑ 23% improvement this week</div>
+        </div>
+        <div class="preview-card" id="preview-1">
+          <div class="fc-emoji" style="font-size:40px; margin-bottom:16px;">💬</div>
+          <div class="preview-label">Session Today</div>
+          <div class="preview-value">12 min</div>
+          <div class="preview-trend">✓ Talked through work stress</div>
+        </div>
+        <div class="preview-card" id="preview-2">
+          <div class="fc-emoji" style="font-size:40px; margin-bottom:16px;">📓</div>
+          <div class="preview-label">Journal Entries</div>
+          <div class="preview-value">47 entries</div>
+          <div class="preview-trend">🌱 3-month writing streak</div>
+        </div>
+        <div class="preview-card" id="preview-3">
+          <div class="preview-label">Wellness Score</div>
+          <div class="preview-value" style="font-size:56px;">84</div>
+          <div class="preview-trend">↑ Up from 61 last month</div>
+          <div style="margin-top:16px; background:rgba(52,199,150,0.1); border-radius:8px; padding:12px 16px; font-size:13px; color:rgba(232,245,240,0.5);">
+            🎯 Main trigger: Work deadlines
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ HOW IT WORKS ══ -->
+  <section class="lp-how">
+    <div class="lp-how-inner">
+      <div class="how-header">
+        <div class="section-label" style="justify-content:center;" class="reveal">
+          <span class="section-label-line"></span>
+          Process
+          <span class="section-label-line"></span>
+        </div>
+        <h2 class="section-headline reveal" style="margin-bottom:12px;">How EmoCare works</h2>
+        <p class="section-sub" style="margin:0 auto; text-align:center;" class="reveal">Four simple steps to a healthier emotional life</p>
+      </div>
+
+      <div class="how-steps-grid">
+        <div class="how-step-card reveal">
+          <div class="how-step-num-wrap">
+            <div class="how-step-num">01</div>
+          </div>
+          <h3>Check in daily</h3>
+          <p>Take 30 seconds to log your mood and what's happening in your life. Build self-awareness effortlessly.</p>
+        </div>
+        <div class="how-step-card reveal reveal-delay-1">
+          <div class="how-step-num-wrap">
+            <div class="how-step-num">02</div>
+          </div>
+          <h3>Talk it out</h3>
+          <p>Chat with EmoCare AI about your feelings — it listens deeply and asks the right questions to help you process.</p>
+        </div>
+        <div class="how-step-card reveal reveal-delay-2">
+          <div class="how-step-num-wrap">
+            <div class="how-step-num">03</div>
+          </div>
+          <h3>Gain insight</h3>
+          <p>Receive personalized analysis of your emotional patterns and discover what's really driving your feelings.</p>
+        </div>
+        <div class="how-step-card reveal reveal-delay-3">
+          <div class="how-step-num-wrap">
+            <div class="how-step-num">04</div>
+          </div>
+          <h3>Grow stronger</h3>
+          <p>Track your progress with visual dashboards and build emotional resilience one day at a time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TESTIMONIALS ══ -->
+  <section class="lp-testimonials">
+    <div class="testimonials-header">
+      <div class="section-label" style="justify-content:center;" class="reveal">
+        <span class="section-label-line"></span>
+        Testimonials
+        <span class="section-label-line"></span>
+      </div>
+      <h2 class="section-headline reveal" style="margin-bottom:12px; text-align:center;">Real stories, <em>real growth</em></h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="tcard reveal">
+        <div class="tcard-stars">⭐⭐⭐⭐⭐</div>
+        <p class="tcard-quote">"EmoCare has genuinely changed how I handle stress. It feels like talking to a friend who truly listens — I open up in ways I never expected."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">👩</div>
+          <div>
+            <div class="tcard-name">Sarah M.</div>
+            <div class="tcard-role">Teacher, using EmoCare for 4 months</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard reveal reveal-delay-1">
+        <div class="tcard-stars">⭐⭐⭐⭐⭐</div>
+        <p class="tcard-quote">"The mood tracking and journaling together are incredibly powerful. I can actually see my emotional patterns now and that awareness alone is transformative."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">👨</div>
+          <div>
+            <div class="tcard-name">James T.</div>
+            <div class="tcard-role">Software Engineer, daily user</div>
+          </div>
+        </div>
+      </div>
+      <div class="tcard reveal reveal-delay-2">
+        <div class="tcard-stars">⭐⭐⭐⭐⭐</div>
+        <p class="tcard-quote">"I was skeptical about AI for mental wellness, but EmoCare surprised me. The compassion and depth of insight is remarkable. I feel genuinely supported."</p>
+        <div class="tcard-author">
+          <div class="tcard-avatar">👩</div>
+          <div>
+            <div class="tcard-name">Priya K.</div>
+            <div class="tcard-role">Healthcare professional, 6 months</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CTA ══ -->
+  <section class="lp-cta">
+    <div class="cta-card reveal">
+      <div class="section-label" style="justify-content:center; margin-bottom:20px;">
+        <span class="section-label-line"></span>
+        Get Started Free
+        <span class="section-label-line"></span>
+      </div>
+      <h2 class="cta-headline">
+        Your emotional wellness<br />journey starts <em>today</em>
+      </h2>
+      <p class="cta-sub">Join thousands who've discovered a healthier, happier relationship with their emotions.</p>
+      <div class="cta-actions">
+        <a href="chat.html" class="btn-hero-primary">
+          Begin Your Journey
+          <span class="btn-arrow">→</span>
+        </a>
+        <a href="journal.html" class="btn-hero-ghost">Start Journaling</a>
+      </div>
+      <p class="cta-note">✓ Free to use &nbsp;&nbsp; ✓ No account required &nbsp;&nbsp; ✓ Private & secure</p>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="lp-footer">
+      <div class="footer-top">
+        <div class="footer-brand-wrap">
+          <a href="index.html" class="lp-brand" style="margin-bottom: 0;">
+            <div class="lp-logo-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z" fill="#34c796"/>
+              </svg>
+            </div>
+            <span class="lp-brand-name">EmoCare</span>
+          </a>
+          <p class="footer-tagline">Your compassionate AI companion for emotional wellness — always available, always caring, always private.</p>
+        </div>
+        <div class="footer-nav-group">
+          <div class="footer-nav-col">
+            <h5>App</h5>
+            <a href="chat.html">Chat with AI</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="journal.html">Journal</a>
+          </div>
+          <div class="footer-nav-col">
+            <h5>About</h5>
+            <a href="#">How it works</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Support</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2024 EmoCare. Built with 💚 for your wellbeing.</p>
+        <p class="footer-crisis">If you're in crisis, please contact a mental health professional or call a crisis helpline immediately.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Navbar scroll effect
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ── Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(r => observer.observe(r));
+
+    // ── Feature tabs
+    function setTab(idx) {
+      document.querySelectorAll('.ftab').forEach((t, i) => {
+        t.classList.toggle('active', i === idx);
+      });
+      document.querySelectorAll('.preview-card').forEach((p, i) => {
+        p.classList.toggle('active', i === idx);
+      });
+    }
+
+    // ── Animated counter
+    function animateCounter(el, target) {
+      let start = 0;
+      const dur = 1500;
+      const step = (timestamp) => {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const val = Math.floor(eased * target);
+        el.textContent = val.toLocaleString() + (el.dataset.suffix || '');
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    // Trigger counters when hero metrics visible
+    const metricsObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          metricsObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.metric').forEach(m => metricsObserver.observe(m));
+  </script>
+</body>
+</html>

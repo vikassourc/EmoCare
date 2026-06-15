@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EmoCare Profile — Manage your account settings, change your avatar, view your stats, and customize your wellness experience." />
+  <title>EmoCare — Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+<!-- Ambient background --><div class="aurora-bg"></div>
+
+<div class="profile-layout" data-reveal="up">
+
+  <!-- NAV -->
+  <nav class="dashboard-nav">
+    <div class="nav-brand">
+      <a href="/" style="display:flex;align-items:center;gap:8px;">
+        <span class="brand-icon"><img class="brand-logo" src="assets/emologo.jpg" alt="EmoCare Logo"></span>
+        <span class="brand-name">EmoCare</span>
+      </a>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/chat.html" class="nav-link">Chat</a>
+      <a href="/dashboard.html" class="nav-link">Dashboard</a>
+      <a href="/journal.html" class="nav-link">Journal</a>
+      <a href="/breathe.html" class="nav-link">Breathe</a>
+    </div>
+    <div class="nav-right">
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="user-menu" id="userMenu">
+        <button class="user-avatar-btn" id="userAvatarBtn">💚</button>
+        <div class="user-dropdown" id="userDropdown">
+          <span class="user-dropdown-name" id="userName">User</span>
+          <a href="/profile.html" class="dropdown-item">👤 Profile</a>
+          <a href="/dashboard.html" class="dropdown-item">📊 Dashboard</a>
+          <button class="dropdown-item" id="logoutBtn">🚪 Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="profile-body">
+
+    <!-- PROFILE HERO CARD -->
+    <section class="profile-card" data-reveal="scale">
+      <div class="profile-avatar" id="profileAvatar">💚</div>
+      <h2 class="profile-name" id="profileName">User</h2>
+      <p class="profile-email" id="profileEmail">user@example.com</p>
+      <p class="profile-since" id="profileSince">Member since —</p>
+
+      <div class="profile-stats-row" data-reveal-stagger>
+        <div class="profile-stat tilt-card">
+          <span class="profile-stat-value" id="profileSessions">0</span>
+          <span class="profile-stat-label">Sessions</span>
+        </div>
+        <div class="profile-stat-divider"></div>
+        <div class="profile-stat tilt-card">
+          <span class="profile-stat-value" id="profileJournals">0</span>
+          <span class="profile-stat-label">Journal Entries</span>
+        </div>
+        <div class="profile-stat-divider"></div>
+        <div class="profile-stat tilt-card">
+          <span class="profile-stat-value" id="profileMoods">0</span>
+          <span class="profile-stat-label">Mood Entries</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="profile-section" data-reveal="up">
+      <h3 class="section-title">⚙️ Settings</h3>
+
+      <!-- Change Name -->
+      <div class="settings-group">
+        <label class="form-label" for="settingsName">Display Name</label>
+        <div class="settings-inline">
+          <input class="form-input" type="text" id="settingsName" placeholder="Your name" />
+          <button class="btn-primary settings-save-btn" id="saveNameBtn">Save</button>
+        </div>
+      </div>
+
+      <!-- Change Avatar -->
+      <div class="settings-group">
+        <label class="form-label">Avatar</label>
+        <div class="avatar-picker" id="avatarPicker">
+          <button class="avatar-option selected" data-avatar="💚">💚</button>
+          <button class="avatar-option" data-avatar="🌿">🌿</button>
+          <button class="avatar-option" data-avatar="🧠">🧠</button>
+          <button class="avatar-option" data-avatar="💜">💜</button>
+          <button class="avatar-option" data-avatar="🌊">🌊</button>
+          <button class="avatar-option" data-avatar="☀️">☀️</button>
+          <button class="avatar-option" data-avatar="🦋">🦋</button>
+          <button class="avatar-option" data-avatar="🌸">🌸</button>
+        </div>
+      </div>
+
+      <!-- Theme Toggle -->
+      <div class="settings-group">
+        <label class="form-label">Theme</label>
+        <div class="theme-toggle-group">
+          <button class="theme-btn active" id="themeLightBtn" data-theme="light">☀️ Light</button>
+          <button class="theme-btn" id="themeDarkBtn" data-theme="dark">🌙 Dark</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCOUNT -->
+    <section class="profile-section" data-reveal="up">
+      <h3 class="section-title">🔐 Account</h3>
+
+      <!-- Change Password -->
+      <div class="settings-group">
+        <label class="form-label" for="oldPassword">Current Password</label>
+        <input class="form-input" type="password" id="oldPassword" placeholder="Current password" autocomplete="current-password" />
+      </div>
+      <div class="settings-group">
+        <label class="form-label" for="newPassword">New Password</label>
+        <input class="form-input" type="password" id="newPassword" placeholder="New password (min 8 chars)" minlength="8" autocomplete="new-password" />
+      </div>
+      <div class="settings-group">
+        <label class="form-label" for="confirmNewPassword">Confirm New Password</label>
+        <div class="settings-inline">
+          <input class="form-input" type="password" id="confirmNewPassword" placeholder="Confirm new password" minlength="8" autocomplete="new-password" />
+          <button class="btn-primary settings-save-btn" id="changePasswordBtn">Update</button>
+        </div>
+      </div>
+
+      <!-- Data & Danger Zone -->
+      <div class="settings-group account-actions">
+        <button class="btn-ghost" id="exportDataBtn">📦 Export My Data</button>
+        <button class="btn-danger" id="deleteAccountBtn">🗑️ Delete Account</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Delete Account Confirmation Modal -->
+<div class="modal-overlay hidden" id="deleteModal">
+  <div class="modal-card">
+    <h3>⚠️ Delete Account</h3>
+    <p>This action is permanent and cannot be undone. All your data including sessions, journal entries, and mood history will be permanently deleted.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="cancelDeleteBtn">Cancel</button>
+      <button class="btn-danger" id="confirmDeleteBtn">Delete My Account</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/animations.js"></script>
+<script src="js/api.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/profile.js"></script>
+
+</body>
+</html>

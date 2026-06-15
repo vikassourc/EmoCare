@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EmoCare — Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="journal-layout">
+
+  <!-- NAV -->
+  <nav class="dashboard-nav">
+    <div class="nav-brand">
+      <a href="index.html" style="display:flex;align-items:center;gap:8px;">
+        <span class="brand-icon">💚</span>
+        <span class="brand-name">EmoCare</span>
+      </a>
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="chat.html" class="nav-link">Chat</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="journal.html" class="nav-link active">Journal</a>
+    </div>
+    <a href="chat.html" class="btn-primary">Open chat</a>
+  </nav>
+
+  <div class="journal-body">
+
+    <div class="journal-header">
+      <div>
+        <h2>Your Journal</h2>
+        <p style="color:var(--text-soft);font-size:15px;margin-top:4px;">A private space to process your thoughts</p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <span id="entryCount" style="font-size:13px;color:var(--text-soft);"></span>
+      </div>
+    </div>
+
+    <!-- AI PROMPT CARD -->
+    <div class="journal-prompt">
+      <div class="prompt-label">✨ Today's reflection prompt</div>
+      <div class="prompt-text" id="currentPrompt">
+        What is one emotion you've been avoiding lately, and what do you think it's trying to tell you?
+      </div>
+      <div class="prompt-actions">
+        <button class="prompt-btn" onclick="getNewPrompt()">🔄 New prompt</button>
+        <button class="prompt-btn primary-btn" onclick="usePrompt()">✍️ Write about this</button>
+      </div>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="journal-editor">
+      <div class="editor-toolbar">
+        <span style="font-size:12px;color:var(--text-soft);font-style:italic;" id="entryDate"></span>
+        <div class="toolbar-sep"></div>
+        <button class="toolbar-btn" onclick="formatText('bold')"><b>B</b></button>
+        <button class="toolbar-btn" onclick="formatText('italic')"><i>I</i></button>
+        <button class="toolbar-btn" onclick="formatText('underline')"><u>U</u></button>
+        <div class="toolbar-sep"></div>
+        <select id="moodSelect" style="border:1px solid rgba(61,140,120,0.2);border-radius:6px;padding:4px 8px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text-mid);background:var(--cream);cursor:pointer;">
+          <option value="">Tag mood...</option>
+          <option value="😊 Happy">😊 Happy</option>
+          <option value="😔 Sad">😔 Sad</option>
+          <option value="😰 Anxious">😰 Anxious</option>
+          <option value="😤 Stressed">😤 Stressed</option>
+          <option value="😌 Calm">😌 Calm</option>
+          <option value="😶 Numb">😶 Numb</option>
+          <option value="😤 Angry">😤 Angry</option>
+          <option value="🤩 Excited">🤩 Excited</option>
+        </select>
+      </div>
+      <textarea
+        id="journalTextarea"
+        placeholder="Start writing... this is your private space. No judgment, just you and your thoughts."
+        oninput="updateWordCount()"
+      ></textarea>
+      <div class="editor-footer">
+        <span class="word-count" id="wordCount">0 words</span>
+        <div style="display:flex;gap:10px;">
+          <button class="btn-ghost" style="padding:8px 20px;font-size:13px;" onclick="getAIFeedback()">🧠 AI reflection</button>
+          <button class="btn-primary" style="padding:8px 20px;font-size:13px;" onclick="saveEntry()">Save entry</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI FEEDBACK AREA -->
+    <div id="aiFeedbackArea" class="section-card hidden" style="margin-bottom:28px;border-left:3px solid var(--green-main);">
+      <h3>EmoCare's reflection</h3>
+      <div id="aiFeedbackContent" style="color:var(--text-mid);line-height:1.8;font-size:15px;"></div>
+    </div>
+
+    <!-- PAST ENTRIES -->
+    <div class="past-entries">
+      <h3>Past entries</h3>
+      <div class="entry-list" id="entryList">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── CONFIG ──────────────────────────────────────────────
+  const API_KEY = 'YOUR_ANTHROPIC_API_KEY';
+
+  // ── PROMPTS LIBRARY ──────────────────────────────────────
+  const STATIC_PROMPTS = [
+    "What is one emotion you've been avoiding lately, and what do you think it's trying to tell you?",
+    "Describe a moment this week when you felt truly at peace. What made it possible?",
+    "What belief about yourself do you wish you could let go of?",
+    "If your anxiety could speak, what would it say? What would you reply?",
+    "What does 'taking care of yourself' mean to you right now?",
+    "Who in your life makes you feel truly seen? How do they do it?",
+    "What would you tell your younger self about this phase of life?",
+    "Write about a challenge you overcame. What did it teach you?",
+    "What are you most proud of this week — no matter how small?",
+    "What kind of person do you want to become in the next year?",
+  ];
+
+  let currentPromptIndex = 0;
+  let useAIPrompt = false;
+
+  // ── INIT ─────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    const now = new Date();
+    document.getElementById('entryDate').textContent =
+      now.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    renderEntries();
+  });
+
+  // ── PROMPTS ──────────────────────────────────────────────
+  async function getNewPrompt() {
+    const btn = document.querySelector('.prompt-btn');
+    btn.textContent = '⏳ Getting prompt...';
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 100,
+          messages: [{
+            role: 'user',
+            content: 'Generate ONE deep, thoughtful journaling prompt for someone working on their emotional wellness. The prompt should encourage self-reflection about emotions, relationships, or personal growth. Return ONLY the prompt text, nothing else.'
+          }]
+        })
+      });
+      const data = await response.json();
+      document.getElementById('currentPrompt').textContent = data.content?.[0]?.text || STATIC_PROMPTS[Math.floor(Math.random() * STATIC_PROMPTS.length)];
+    } catch {
+      currentPromptIndex = (currentPromptIndex + 1) % STATIC_PROMPTS.length;
+      document.getElementById('currentPrompt').textContent = STATIC_PROMPTS[currentPromptIndex];
+    }
+
+    btn.textContent = '🔄 New prompt';
+  }
+
+  function usePrompt() {
+    const prompt = document.getElementById('currentPrompt').textContent;
+    const textarea = document.getElementById('journalTextarea');
+    textarea.value = `Prompt: ${prompt}\n\n`;
+    textarea.focus();
+    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+    updateWordCount();
+    textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // ── WORD COUNT ───────────────────────────────────────────
+  function updateWordCount() {
+    const text = document.getElementById('journalTextarea').value.trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    document.getElementById('wordCount').textContent = `${words} word${words !== 1 ? 's' : ''}`;
+  }
+
+  // ── FORMAT TEXT ──────────────────────────────────────────
+  function formatText(cmd) {
+    document.getElementById('journalTextarea').focus();
+    document.execCommand(cmd, false, null);
+  }
+
+  // ── SAVE ENTRY ───────────────────────────────────────────
+  function saveEntry() {
+    const text = document.getElementById('journalTextarea').value.trim();
+    if (!text) { alert('Please write something before saving.'); return; }
+
+    const mood = document.getElementById('moodSelect').value;
+    const entries = JSON.parse(localStorage.getItem('emocare_journal') || '[]');
+    const entry = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      text,
+      mood,
+      preview: text.replace(/^Prompt:.*\n\n/, '').substring(0, 120) + '...'
+    };
+    entries.unshift(entry);
+    localStorage.setItem('emocare_journal', JSON.stringify(entries));
+
+    document.getElementById('journalTextarea').value = '';
+    document.getElementById('moodSelect').value = '';
+    updateWordCount();
+
+    renderEntries();
+    alert('✅ Entry saved!');
+  }
+
+  // ── AI FEEDBACK ──────────────────────────────────────────
+  async function getAIFeedback() {
+    const text = document.getElementById('journalTextarea').value.trim();
+    if (!text || text.length < 20) { alert('Please write at least a few sentences first.'); return; }
+
+    const area = document.getElementById('aiFeedbackArea');
+    const content = document.getElementById('aiFeedbackContent');
+    area.classList.remove('hidden');
+    content.textContent = 'Reading your entry...';
+    area.scrollIntoView({ behavior: 'smooth' });
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 500,
+          messages: [{
+            role: 'user',
+            content: `You are EmoCare's journaling coach. The user just wrote this journal entry:\n\n"${text}"\n\nRespond with:\n1. A warm, empathetic acknowledgment of what they wrote (1-2 sentences)\n2. A key emotional insight you noticed (1-2 sentences)\n3. One thing they can be proud of from this reflection\n4. One gentle follow-up question to deepen their reflection\n\nBe warm, insightful, and encouraging. Keep it to 4-5 sentences total.`
+          }]
+        })
+      });
+      const data = await response.json();
+      content.innerHTML = (data.content?.[0]?.text || '').replace(/\n/g, '<br>');
+    } catch {
+      content.textContent = 'Unable to connect. Please check your API key.';
+    }
+  }
+
+  // ── RENDER ENTRIES ───────────────────────────────────────
+  function renderEntries() {
+    const entries = JSON.parse(localStorage.getItem('emocare_journal') || '[]');
+    const list = document.getElementById('entryList');
+    document.getElementById('entryCount').textContent = `${entries.length} entr${entries.length !== 1 ? 'ies' : 'y'}`;
+
+    if (!entries.length) {
+      list.innerHTML = `
+        <div style="text-align:center;padding:40px;color:var(--text-soft);">
+          <div style="font-size:40px;margin-bottom:12px;">📓</div>
+          <p>No entries yet. Write your first one above!</p>
+        </div>`;
+      return;
+    }
+
+    list.innerHTML = entries.map(e => `
+      <div class="entry-item" onclick="loadEntry('${e.id}')">
+        <div class="entry-date">
+          ${new Date(e.date).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+        </div>
+        <div class="entry-preview">${e.preview}</div>
+        ${e.mood ? `<span class="entry-mood">${e.mood}</span>` : ''}
+      </div>`).join('');
+  }
+
+  function loadEntry(id) {
+    const entries = JSON.parse(localStorage.getItem('emocare_journal') || '[]');
+    const entry = entries.find(e => e.id == id);
+    if (!entry) return;
+    document.getElementById('journalTextarea').value = entry.text;
+    if (entry.mood) document.getElementById('moodSelect').value = entry.mood;
+    updateWordCount();
+    document.getElementById('journalTextarea').scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+
+<script src="js/darkmode.js"></script>
+</body>
+</html>

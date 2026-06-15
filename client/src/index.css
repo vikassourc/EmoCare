@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════
+   EMOCARE — GLOBAL DARK GREEN THEME
+   ═══════════════════════════════════════════ */
+
+:root {
+  --bg-base:        #050c0a;
+  --bg-surface:     rgba(13, 31, 26, 0.85);
+  --bg-surface-2:   rgba(20, 42, 34, 0.9);
+  --border-subtle:  rgba(52, 199, 150, 0.10);
+  --border-mid:     rgba(52, 199, 150, 0.20);
+  --text-main:      #e8f5f0;
+  --text-mid:       rgba(232, 245, 240, 0.60);
+  --text-soft:      rgba(232, 245, 240, 0.35);
+  --accent:         #34c796;
+  --accent-dark:    #2da87e;
+  --accent-glow:    rgba(52, 199, 150, 0.25);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  width: 100%; height: 100%;
+  background: var(--bg-base);
+  color: var(--text-main);
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(52,199,150,0.15); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(52,199,150,0.3); }
+
+textarea { resize: none; outline: none; }
+button { cursor: pointer; }
+
+/* Mesh grid */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(52,199,150,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52,199,150,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+#root { position: relative; z-index: 1; }
+
+/* ── Animations ── */
+@keyframes shimmer-move {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+@keyframes wave {
+  0%, 100% { transform: scaleY(0.4); }
+  50%       { transform: scaleY(1); }
+}
+@keyframes float-up {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Shimmer text — now green */
+.shimmer-text {
+  background: linear-gradient(90deg, #34c796, #7effd4, #4eb8a0, #34c796);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer-move 3s linear infinite;
+}
+
+/* Pulse dot */
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: #34c796;
+  opacity: 0.5;
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+/* ── Tailwind base overrides for the green theme ── */
+
+/* Surface cards */
+.card-surface {
+  background: rgba(13, 31, 26, 0.7);
+  border: 1px solid rgba(52, 199, 150, 0.10);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+}
+
+/* Active nav highlight — green instead of indigo */
+.nav-active-bg {
+  background: rgba(52, 199, 150, 0.12);
+  border: 1px solid rgba(52, 199, 150, 0.22);
+}
+
+/* Green glow button */
+.btn-green {
+  background: linear-gradient(135deg, #34c796, #2da87e);
+  color: #050c0a;
+  font-weight: 600;
+  border-radius: 100px;
+  border: none;
+  box-shadow: 0 0 24px rgba(52,199,150,0.25);
+  transition: all 0.25s;
+}
+.btn-green:hover {
+  box-shadow: 0 0 40px rgba(52,199,150,0.45);
+  transform: translateY(-2px);
+}
+
+/* Override any leftover indigo/violet references */
+.bg-indigo-500\/10, .bg-indigo-500\/20 { background-color: rgba(52,199,150,0.10) !important; }
+.bg-violet-500\/10, .bg-violet-500\/20 { background-color: rgba(52,199,150,0.08) !important; }
+.border-indigo-500\/20, .border-indigo-500\/30 { border-color: rgba(52,199,150,0.22) !important; }
+.border-violet-500\/20 { border-color: rgba(52,199,150,0.20) !important; }
+.text-indigo-400 { color: #34c796 !important; }
+.text-violet-400 { color: #4eb8a0 !important; }
+.from-indigo-500 { --tw-gradient-from: #34c796 !important; }
+.to-violet-600   { --tw-gradient-to:   #2da87e !important; }
+.from-indigo-500\/20 { --tw-gradient-from: rgba(52,199,150,0.20) !important; }
+.from-violet-500\/20 { --tw-gradient-from: rgba(52,199,150,0.15) !important; }
+
+/* Zinc overrides → dark green surfaces */
+.bg-zinc-900, .bg-zinc-950 { background-color: #0d1f1a !important; }
+.bg-zinc-800              { background-color: #142219 !important; }
+.border-zinc-800          { border-color: rgba(52,199,150,0.12) !important; }
+.text-zinc-400            { color: rgba(232,245,240,0.55) !important; }
+.text-zinc-500            { color: rgba(232,245,240,0.38) !important; }
+.text-zinc-600            { color: rgba(232,199,150,0.28) !important; }
+.text-zinc-200, .text-zinc-300 { color: rgba(232,245,240,0.80) !important; }
+.border-white\/5          { border-color: rgba(52,199,150,0.08) !important; }
+.border-white\/10         { border-color: rgba(52,199,150,0.12) !important; }
+.bg-white\/5              { background-color: rgba(52,199,150,0.05) !important; }
+.bg-white\/10             { background-color: rgba(52,199,150,0.08) !important; }
+.hover\:bg-white\/5:hover { background-color: rgba(52,199,150,0.07) !important; }
+.hover\:bg-white\/8:hover { background-color: rgba(52,199,150,0.08) !important; }
+
+/* Emerald stays emerald (streak, synced) */
+.text-emerald-400 { color: #34c796 !important; }
+.text-emerald-500 { color: #2da87e !important; }
+.bg-emerald-500   { background-color: #34c796 !important; }
+.from-emerald-500\/20 { --tw-gradient-from: rgba(52,199,150,0.20) !important; }
+.border-emerald-500\/20 { border-color: rgba(52,199,150,0.20) !important; }

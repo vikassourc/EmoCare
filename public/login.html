@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sign in or create your EmoCare account — your safe space for emotional growth and AI-powered wellness support." />
+  <title>EmoCare — Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+  <div class="auth-page">
+    <div class="auth-container">
+
+      <!-- LEFT PANEL -->
+      <div class="auth-left">
+        <div class="auth-left-brand">
+          <div class="auth-left-brand-icon"><img class="auth-left-brand-logo" src="assets/emologo.jpg" alt="EmoCare Logo"></div>
+          <span class="auth-left-brand-name">EmoCare</span>
+        </div>
+
+        <div class="auth-left-middle">
+          <h2 class="auth-left-headline">Your <em>wellbeing</em><br>starts here.</h2>
+          <p class="auth-left-desc">A private space to understand yourself, process emotions, and grow — guided by thoughtful AI support.</p>
+          <div class="auth-trust-items">
+            <div class="auth-trust-item">
+              <span class="auth-trust-dot"></span>
+              <span class="auth-trust-text">End-to-end encrypted conversations</span>
+            </div>
+            <div class="auth-trust-item">
+              <span class="auth-trust-dot"></span>
+              <span class="auth-trust-text">No data sold, ever</span>
+            </div>
+            <div class="auth-trust-item">
+              <span class="auth-trust-dot"></span>
+              <span class="auth-trust-text">Evidence-based emotional support</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-left-bottom">
+          <p class="auth-left-quote">"The greatest thing in the world is to know how to belong to oneself."</p>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="auth-right">
+        <div class="auth-right-header">
+          <p class="auth-right-eyebrow" id="authEyebrow">Welcome back</p>
+          <h1 class="auth-right-title" id="authTitle">Sign in to your account</h1>
+        </div>
+
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="loginTab" data-tab="login">Login</button>
+          <button class="auth-tab" id="signupTab" data-tab="signup">Create account</button>
+        </div>
+
+        <div class="auth-form-wrap">
+          <!-- Login Form -->
+          <form class="auth-form" id="loginForm">
+            <div class="form-group">
+              <label class="form-label" for="loginEmail">Email address</label>
+              <input class="form-input" type="email" id="loginEmail" name="email" placeholder="you@example.com" required autocomplete="email" />
+              <span class="form-error" id="loginEmailError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="loginPassword">Password</label>
+              <input class="form-input" type="password" id="loginPassword" name="password" placeholder="Enter your password" required autocomplete="current-password" />
+              <span class="form-error" id="loginPasswordError"></span>
+            </div>
+            <button type="submit" class="auth-submit">Sign in →</button>
+            <p class="auth-switch">No account? <a href="#" id="switchToSignup">Create one free</a></p>
+          </form>
+
+          <!-- Signup Form -->
+          <form class="auth-form hidden" id="signupForm">
+            <div class="form-group">
+              <label class="form-label" for="signupName">Full name</label>
+              <input class="form-input" type="text" id="signupName" name="name" placeholder="Your name" required autocomplete="name" />
+              <span class="form-error" id="signupNameError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signupEmail">Email address</label>
+              <input class="form-input" type="email" id="signupEmail" name="email" placeholder="you@example.com" required autocomplete="email" />
+              <span class="form-error" id="signupEmailError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signupPassword">Password</label>
+              <input class="form-input" type="password" id="signupPassword" name="password" placeholder="Min 8 characters" required minlength="8" autocomplete="new-password" />
+              <span class="form-error" id="signupPasswordError"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="signupConfirm">Confirm password</label>
+              <input class="form-input" type="password" id="signupConfirm" name="confirmPassword" placeholder="Confirm your password" required minlength="8" autocomplete="new-password" />
+              <span class="form-error" id="signupConfirmError"></span>
+            </div>
+            <button type="submit" class="auth-submit">Create account →</button>
+            <p class="auth-switch">Already a member? <a href="#" id="switchToLogin">Sign in</a></p>
+          </form>
+        </div>
+
+        <div class="auth-bottom-wrap">
+          <div class="auth-divider">
+            <span class="auth-divider-line"></span>
+            <span class="auth-divider-text">or</span>
+            <span class="auth-divider-line"></span>
+          </div>
+          <div id="googleBtnContainer" style="display:flex;justify-content:center;"></div>
+          <p class="auth-footer-note">By continuing, you agree to EmoCare's commitment to your privacy and emotional safety.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/animations.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    const tabs = document.querySelectorAll('.auth-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('loginForm').classList.toggle('hidden', target !== 'login');
+        document.getElementById('signupForm').classList.toggle('hidden', target !== 'signup');
+        document.getElementById('authEyebrow').textContent = target === 'login' ? 'Welcome back' : 'Get started free';
+        document.getElementById('authTitle').textContent = target === 'login' ? 'Sign in to your account' : 'Create your account';
+      });
+    });
+    document.getElementById('switchToSignup').addEventListener('click', e => { e.preventDefault(); document.getElementById('signupTab').click(); });
+    document.getElementById('switchToLogin').addEventListener('click', e => { e.preventDefault(); document.getElementById('loginTab').click(); });
+  </script>
+
+</body>
+</html>
